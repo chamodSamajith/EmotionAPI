@@ -2,9 +2,13 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from deepface import DeepFace
 import os
+import uuid
 
 app = Flask(__name__)
 CORS(app)  # Enable Cross-Origin Resource Sharing for front-end compatibility
+
+# Pre-load the DeepFace model at startup
+DeepFace.build_model('Emotion')
 
 @app.route('/analyze-emotion', methods=['POST'])
 def analyze_emotion():
@@ -14,8 +18,8 @@ def analyze_emotion():
         if not image_file:
             return jsonify({"error": "No image file provided"}), 400
 
-        # Save the image to a temporary file
-        image_path = "temp_image.jpg"
+        # Create a unique temporary file name
+        image_path = f"temp_image_{uuid.uuid4().hex}.jpg"
         image_file.save(image_path)
 
         # Analyze the uploaded image
@@ -36,8 +40,12 @@ def analyze_emotion():
 
         return jsonify(result), 200
 
+    except ValueError as ve:
+        return jsonify({"error": f"Value error: {str(ve)}"}), 400
+    except FileNotFoundError as fe:
+        return jsonify({"error": f"File error: {str(fe)}"}), 400
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

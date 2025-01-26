@@ -4,3 +4,4 @@ deepface==0.0.93
 opencv-python==4.10.0.84
 tensorflow==2.17.0
 tf-keras
+gunicorn==20.1.0
