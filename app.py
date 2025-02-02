@@ -9,7 +9,7 @@ CORS(app)  # Enable Cross-Origin Resource Sharing for front-end compatibility
 @app.route('/analyze-emotion', methods=['POST'])
 def analyze_emotion():
     try:
-        print("API hit! initial")
+        print("API hit! ")
         # Get the image file from the request
         image_file = request.files['image']
         if not image_file:
