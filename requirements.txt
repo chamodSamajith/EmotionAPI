@@ -1,6 +1,6 @@
 Flask
-deepface
-opencv-python
-tensorflow
-tf-keras
+# deepface
+# opencv-python
+# tensorflow
+# tf-keras
 gunicorn
