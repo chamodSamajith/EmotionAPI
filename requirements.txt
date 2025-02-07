@@ -1,6 +1,2 @@
 Flask
-# deepface
-# opencv-python
-# tensorflow
-# tf-keras
 gunicorn
