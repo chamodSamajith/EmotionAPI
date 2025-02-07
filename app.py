@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, World! Flask API is running 4."
+    return "Hello, World! Flask API 5."
 
 # @app.route('/analyze-emotion', methods=['POST'])
 # def analyze_emotion():
