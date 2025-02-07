@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask
+#, request, jsonify
 #from flask_cors import CORS
 from deepface import DeepFace
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, World! Flask API 5."
+    return "Hello, World! Flask API 6."
 
 # @app.route('/analyze-emotion', methods=['POST'])
 # def analyze_emotion():
