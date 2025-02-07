@@ -8,7 +8,7 @@ CORS(app)  # Enable Cross-Origin Resource Sharing for front-end compatibility
 
 @app.route("/")
 def home():
-    return "Hello, World! Flask API is running."
+    return "Hello, World! Flask API is running 2."
 
 
 @app.route('/analyze-emotion', methods=['POST'])
