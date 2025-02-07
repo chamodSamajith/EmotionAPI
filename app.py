@@ -1,7 +1,7 @@
 from flask import Flask
 #, request, jsonify
 #from flask_cors import CORS
-from deepface import DeepFace
+#from deepface import DeepFace
 
 
 app = Flask(__name__)
