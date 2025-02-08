@@ -1,51 +1,45 @@
-from flask import Flask
-#, request, jsonify
-#from flask_cors import CORS
-#from deepface import DeepFace
-
+import io
+import base64
+from PIL import Image
+from flask import Flask, request, jsonify
+from transformers import pipeline
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Hello, World! Flask API 8."
+# Load the emotion classification pipeline
+emotion_classifier = pipeline("image-classification", model="dima806/facial_emotions_image_detection")
 
-# @app.route('/analyze-emotion', methods=['POST'])
-# def analyze_emotion():
-#     try:
-#         print("API hit! update ")
-#         # Get the image file from the request
-#         image_file = request.files['image']
-#         if not image_file:
-#             return jsonify({"error": "No image file provided"}), 400
+@app.route('/classify_emotion', methods=['POST'])
+def classify_emotion():
+    # Check if the request contains an image
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image provided'}), 400
 
-#         # Save the image to a temporary file
-#         image_path = "temp_image.jpg"
-#         image_file.save(image_path)
+    image_file = request.files['image']
+    
+    # Read and process the image
+    image_bytes = image_file.read()
+    image = Image.open(io.BytesIO(image_bytes))
 
-#         # Analyze the uploaded image
-#         analysis = DeepFace.analyze(img_path=image_path, actions=['emotion'], enforce_detection=False)
+    # Perform emotion classification
+    results = emotion_classifier(image)
 
-#         # Handle batch mode (list output) and single-image mode (dictionary output)
-#         if isinstance(analysis, list):
-#             analysis = analysis[0]  # Get the first analysis from the list
+    # Extract the top prediction
+    top_prediction = results[0]
+    emotion = top_prediction['label']
+    confidence = top_prediction['score']
 
-#         # Extract the dominant emotion and detailed probabilities
-#         result = {
-#             "dominant_emotion": analysis.get('dominant_emotion', "Unknown"),
-#             "emotions": analysis.get('emotion', {})
-#         }
+    # Prepare the response
+    response = {
+        'emotion': emotion,
+        'confidence': confidence
+    }
 
-#         # Remove the temporary file
-#         os.remove(image_path)
+    return jsonify(response)
 
-#         return jsonify(result), 200
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy'}), 200
 
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-
-
-if __name__ == "__main__":
-    import os
-    port = int(os.environ.get("PORT", 8000))  # Use Azure-assigned port
-    app.run(debug=True, host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
