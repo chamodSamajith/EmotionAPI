@@ -39,7 +39,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Hello, World! Flask API 8."
+    return "Hello, World! Flask API."
 
 @app.route('/health', methods=['GET'])
 def health_check():
