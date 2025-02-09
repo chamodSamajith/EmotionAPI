@@ -2,9 +2,11 @@ import io
 from PIL import Image
 from flask import Flask , jsonify, request
 from transformers import pipeline
+from flask_cors import CORS
 
 app = Flask(__name__)
 
+CORS(app)
 
 emotion_classifier = pipeline("image-classification", model="dima806/facial_emotions_image_detection")
 
