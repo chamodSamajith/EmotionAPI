@@ -3,3 +3,4 @@ gunicorn
 pillow
 transformers
 torch
+flask-cors
